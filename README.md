@@ -134,10 +134,10 @@ Automated workflows:
 
 ## 📈 Statistics
 
-- **Total Stations**: `<!-- AUTO-GENERATED -->` 
-- **Countries**: `<!-- AUTO-GENERATED -->`
+- **Total Stations**: `4` 
+- **Countries**: `1`
 - **Contributors**: `<!-- AUTO-GENERATED -->`
-- **Last Updated**: `<!-- AUTO-GENERATED -->`
+- **Last Updated**: `2025-12-06`
 
 ## 🤝 Contributing
 

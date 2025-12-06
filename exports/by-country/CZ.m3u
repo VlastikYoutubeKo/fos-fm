@@ -1,0 +1,15 @@
+#EXTM3U
+#PLAYLIST:CZ Radio Stations
+
+#EXTINF:-1,Example Radio - Pop (Prague)
+https://example.com/stream.mp3
+
+#EXTINF:-1,Phonk Nation Radio (Usti region)
+https://radio.mxnticek.eu/listen/phonk/128.mp3
+
+#EXTINF:-1,Rádio Blaník - Oldies
+https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_BLANIK.aac?gdpr=0
+
+#EXTINF:-1,Hitrádio FM / North Music (Ústí region)
+http://ice.abradio.cz/hitradiofm128.mp3
+
