@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Example Radio",
+    "stream_url": "https://example.com/stream.mp3",
+    "url": "https://example.com",
+    "country": "CZ",
+    "region": "Prague",
+    "genre": "Pop"
+  }
+]
