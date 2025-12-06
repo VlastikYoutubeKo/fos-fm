@@ -1,0 +1,22 @@
+fos-fm.mxnticek.eu {
+    root * /var/radios
+    
+    # Enable PHP
+    php_fastcgi php-fpm:9000
+    
+    # Try files, fallback to index.php
+    try_files {path} {path}/ /index.php?{query}
+    
+    # Security headers
+    header {
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "no-referrer-when-downgrade"
+    }
+    
+    # Encode responses
+    encode gzip
+    
+    # File server for assets
+    file_server
+}
