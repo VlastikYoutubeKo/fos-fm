@@ -1,0 +1,36 @@
+name: Validate Streams
+
+on:
+  pull_request:
+    paths:
+      - 'radios.json'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Install dependencies
+        run: npm install axios
+          
+      - name: Validate JSON syntax
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('radios.json', 'utf8'))"
+          
+      - name: Validate stream URLs
+        run: |
+          node scripts/validate-streams.js
+        continue-on-error: true
+        
+      - name: Check for duplicates
+        run: |
+          node scripts/check-duplicates.js

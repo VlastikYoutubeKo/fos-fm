@@ -1,0 +1,47 @@
+name: Export Radio Stations
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'radios.json'
+  workflow_dispatch:
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Create exports directory
+        run: |
+          mkdir -p exports/by-country
+          
+      - name: Export by country
+        run: |
+          node scripts/export-by-country.js
+          
+      - name: Generate M3U playlists
+        run: |
+          node scripts/generate-m3u.js
+          
+      - name: Update statistics
+        run: |
+          node scripts/update-stats.js
+          
+      - name: Commit and push exports
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add exports/
+          git add README.md || true
+          git diff --quiet && git diff --staged --quiet || git commit -m "🤖 Auto-export: Update radio station exports"
+          git push
