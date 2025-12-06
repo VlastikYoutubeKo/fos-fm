@@ -14,5 +14,21 @@
         "country": "CZ",
         "region": "Usti region",
         "genre": ""
+    },
+    {
+        "name": "Rádio Blaník",
+        "stream_url": "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_BLANIK.aac?gdpr=0",
+        "url": "https://radioblanik.cz/",
+        "country": "CZ",
+        "region": "",
+        "genre": "Oldies"
+    },
+    {
+        "name": "Hitrádio FM / North Music",
+        "stream_url": "http://ice.abradio.cz/hitradiofm128.mp3",
+        "url": "https://hitradionorthmusic.cz/",
+        "country": "CZ",
+        "region": "Ústí region",
+        "genre": ""
     }
 ]
