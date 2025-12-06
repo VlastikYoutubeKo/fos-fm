@@ -1,59 +1,41 @@
 <?php
-require_once 'config.php';
-if (!isset($_GET['state']) || $_GET['state'] !== $_SESSION['oauth_state']) die('Invalid state');
-if (!isset($_GET['code'])) die('No authorization code');
+require_once 'includes/config.php';
+if (($_GET['state'] ?? '') !== $_SESSION['oauth_state']) die('Invalid state');
 
-$tokenUrl = 'https://github.com/login/oauth/access_token';
-$postData = [
+$ch = curl_init('https://github.com/login/oauth/access_token');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
     'client_id' => GITHUB_CLIENT_ID,
     'client_secret' => GITHUB_CLIENT_SECRET,
     'code' => $_GET['code'],
     'redirect_uri' => GITHUB_REDIRECT_URI
-];
-
-$ch = curl_init($tokenUrl);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
+]));
 curl_setopt($ch, CURLOPT_HTTPHEADER, ['Accept: application/json']);
-$response = curl_exec($ch);
+$token = json_decode(curl_exec($ch), true)['access_token'] ?? null;
 curl_close($ch);
 
-$tokenData = json_decode($response, true);
-if (!isset($tokenData['access_token'])) die('Failed to obtain access token');
-$accessToken = $tokenData['access_token'];
+if (!$token) die('Auth failed');
 
-$userUrl = 'https://api.github.com/user';
-$ch = curl_init($userUrl);
+$ch = curl_init('https://api.github.com/user');
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    'Authorization: Bearer ' . $accessToken,
-    'User-Agent: Radio-Submit-App'
-]);
-$userResponse = curl_exec($ch);
+curl_setopt($ch, CURLOPT_HTTPHEADER, ["Authorization: Bearer $token", "User-Agent: App"]);
+$ghUser = json_decode(curl_exec($ch), true);
 curl_close($ch);
-
-$userData = json_decode($userResponse, true);
-if (!isset($userData['id'])) die('Failed to get user information');
 
 $db = getDB();
 $stmt = $db->prepare("SELECT id FROM users WHERE github_id = ?");
-$stmt->execute([$userData['id']]);
-$existingUser = $stmt->fetch();
+$stmt->execute([$ghUser['id']]);
+$exists = $stmt->fetch();
 
-if ($existingUser) {
-    $stmt = $db->prepare("UPDATE users SET github_username = ?, access_token = ? WHERE github_id = ?");
-    $stmt->execute([$userData['login'], $accessToken, $userData['id']]);
-    $userId = $existingUser['id'];
+if ($exists) {
+    $db->prepare("UPDATE users SET github_username=?, access_token=? WHERE github_id=?")
+       ->execute([$ghUser['login'], $token, $ghUser['id']]);
+    $_SESSION['user_id'] = $exists['id'];
 } else {
-    $stmt = $db->prepare("INSERT INTO users (github_id, github_username, access_token) VALUES (?, ?, ?)");
-    $stmt->execute([$userData['id'], $userData['login'], $accessToken]);
-    $userId = $db->lastInsertId();
+    $db->prepare("INSERT INTO users (github_id, github_username, access_token) VALUES (?,?,?)")
+       ->execute([$ghUser['id'], $ghUser['login'], $token]);
+    $_SESSION['user_id'] = $db->lastInsertId();
 }
 
-$_SESSION['user_id'] = $userId;
-$_SESSION['github_username'] = $userData['login'];
-$_SESSION['github_id'] = $userData['id'];
-
-header('Location: /dashboard.php');
+header('Location: /index.php');
 exit;
