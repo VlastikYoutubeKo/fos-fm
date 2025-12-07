@@ -13,3 +13,12 @@ https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_BLANIK.a
 #EXTINF:-1,Hitrádio FM / North Music (Ústí region)
 http://ice.abradio.cz/hitradiofm128.mp3
 
+#EXTINF:-1,Radio ESKA
+https://ic2.smcdn.pl/2380-1.mp3
+
+#EXTINF:-1,VOX FM - Pop
+https://ic1.smcdn.pl/3140-1.mp3
+
+#EXTINF:-1,Radio ZET - Adult Contemporary
+https://n-11-23.dcs.redcdn.pl/sc/o2/Eurozet/live/audio.livx?audio=5
+
