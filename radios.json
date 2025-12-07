@@ -30,5 +30,29 @@
         "country": "CZ",
         "region": "Ústí region",
         "genre": ""
+    },
+    {
+        "name": "Radio ESKA",
+        "stream_url": "https://ic2.smcdn.pl/2380-1.mp3",
+        "url": "",
+        "country": "PL",
+        "region": "",
+        "genre": ""
+    },
+    {
+        "name": "VOX FM",
+        "stream_url": "https://ic1.smcdn.pl/3140-1.mp3",
+        "url": "",
+        "country": "PL",
+        "region": "",
+        "genre": "Pop"
+    },
+    {
+        "name": "Radio ZET",
+        "stream_url": "https://n-11-23.dcs.redcdn.pl/sc/o2/Eurozet/live/audio.livx?audio=5",
+        "url": "",
+        "country": "PL",
+        "region": "",
+        "genre": "Adult Contemporary"
     }
 ]
